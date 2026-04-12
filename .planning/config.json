@@ -1,0 +1,63 @@
+{
+  "project": {
+    "name": "creative-rights-tracker",
+    "version": "0.1",
+    "milestone": 1,
+    "created": "2026-04-12"
+  },
+  "timeline": {
+    "target": "2026-04-26",
+    "phases_estimated_days": 14,
+    "mode": "accelerated"
+  },
+  "workflow": {
+    "agent_model": "claude-haiku",
+    "planning_depth": "detailed",
+    "gsd_mode": "execute",
+    "enable_research": false,
+    "batch_commits": true,
+    "atomic_phases": true
+  },
+  "tech_stack": {
+    "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    "backend": ["Express.js", "Supabase"],
+    "blockchain": ["Solidity", "Hardhat", "Web3.js"],
+    "testing": ["Jest", "Hardhat", "React Testing Library"],
+    "deployment": ["Vercel", "Testnet (Sepolia/Goerli)"]
+  },
+  "directories": {
+    "planning": ".planning",
+    "source": "src",
+    "contracts": "contracts",
+    "scripts": "scripts",
+    "server": "server"
+  },
+  "repository": {
+    "owner": "Lunim-Corporate",
+    "name": "web3-distribution",
+    "branch": "dev_jeevesh",
+    "remote": "origin"
+  },
+  "preferences": {
+    "commit_pattern": "atomic",
+    "code_review": true,
+    "test_coverage_target": 0.80,
+    "security_audit": "required",
+    "accessibility_standard": "WCAG-AA",
+    "performance_budget": {
+      "dashboard_load_ms": 2000,
+      "transaction_sync_ms": 5000
+    }
+  },
+  "integrations": {
+    "supabase": true,
+    "hardhat": true,
+    "metamask": true,
+    "monitoring": true,
+    "slack_notifications": false
+  },
+  "team": {
+    "lead": "Jeevesh Singale",
+    "roles": ["developer", "architect", "tester"]
+  }
+}
