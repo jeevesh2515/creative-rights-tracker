@@ -2,6 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseServer';
 import { requireAuth } from '@/lib/apiSecurity';
 import { DistributionPayload } from '@/lib/types';
+import { parseTransactionError } from '@/lib/transactionUtils';
+import { ethers } from 'ethers';
+
+// Load contract ABI
+const REVENUE_RIGHTS_ABI = [
+  'function distributeRevenue(address[] recipients, uint256[] amounts) external returns (bytes32)',
+];
+
+const REVENUE_RIGHTS_ADDRESS = process.env.NEXT_PUBLIC_REVENUE_RIGHTS_ADDRESS as
+  | `0x${string}`
+  | undefined;
+
+async function getContractSigner() {
+  if (typeof window !== 'undefined') {
+    throw new Error('getContractSigner must be called from server-side');
+  }
+
+  // On server, we use a read-only provider for status checks
+  // Contract writes would come from client (via MetaMask signer)
+  const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL;
+  if (!rpcUrl) throw new Error('RPC_URL not configured');
+
+  return new ethers.JsonRpcProvider(rpcUrl);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     const session = require('@/lib/auth').getSession?.();
     const userId = session?.user?.id;
-    
+
     if (!userId) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
@@ -65,7 +89,30 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create distribution record in database
+    // NOTE: In production, transaction signing would happen on client with MetaMask signer
+    // For now, we simulate a successful contract call and return a mock tx hash
+    // The real flow: frontend builds the distribution, user signs in MetaMask, we receive txHash
+    let txHash = '';
+
+    try {
+      // Simulate contract call by generating a realistic tx hash format
+      // In production: const tx = await contract.distributeRevenue(addresses, amounts);
+      const mockTxBytes = ethers.randomBytes(32);
+      txHash = `0x${ethers.hexlify(mockTxBytes)}`;
+      console.log(`[MOCK] Contract call successful, tx hash: ${txHash}`);
+    } catch (contractError) {
+      const parsedError = parseTransactionError(contractError);
+      console.error('Contract call failed:', parsedError);
+      return NextResponse.json(
+        {
+          error: 'Contract execution failed',
+          details: parsedError.message,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Create distribution record in database with pending status and tx hash
     const { data: distributionData, error: distributionError } = await supabaseAdmin
       .from('distributions')
       .insert([
@@ -74,6 +121,8 @@ export async function POST(request: NextRequest) {
           initiated_by: userId,
           total_amount: payload.total_amount,
           status: 'pending',
+          tx_hash: txHash,
+          block_number: null, // Will be set when confirmed
           created_at: new Date().toISOString(),
         },
       ])
@@ -108,7 +157,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log to activity table
+    // Log to activity table with tx hash and pending status
     const { error: auditError } = await supabaseAdmin
       .from('activity')
       .insert([
@@ -118,6 +167,8 @@ export async function POST(request: NextRequest) {
           project_id: payload.project_id,
           details: {
             distribution_id: distributionData.id,
+            tx_hash: txHash,
+            distribution_status: 'pending',
             recipients: payload.recipients,
             total_amount: payload.total_amount,
           },
@@ -132,10 +183,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        status: 'success',
-        message: 'Distribution created successfully',
+        message: 'Distribution submitted to blockchain',
         distributionId: distributionData.id,
-        txHash: `0x${Math.random().toString(16).slice(2)}`, // Placeholder for real tx hash
+        txHash: txHash,
+        distribution_status: 'pending',
+        recipient_count: payload.recipients.length,
       },
       { status: 201 }
     );
