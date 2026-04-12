@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase as supabaseClient } from '@/lib/supabaseClient';
+import { useContractEvents } from '@/hooks/useContractEvents';
 import toast from 'react-hot-toast';
 import { AdminAuditLog } from '@/lib/types';
 
 export const AuditLogViewer = () => {
   const [logs, setLogs] = useState<AdminAuditLog[]>([]);
+  const { isListening, lastEvent, error: eventError } = useContractEvents();
   const [actionFilter, setActionFilter] = useState<'all' | string>('all');
   const [dateRange, setDateRange] = useState({
     from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
@@ -80,6 +82,12 @@ export const AuditLogViewer = () => {
         return 'bg-green-500/20 text-green-400 border-green-500/30';
       case 'delete_user':
         return 'bg-red-500/20 text-red-400 border-red-500/30';
+      case 'event_revenue_distributed':
+        return 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30';
+      case 'balance_discrepancy':
+        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'manual_reconciliation':
+        return 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30';
       default:
         return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
     }
@@ -111,6 +119,35 @@ export const AuditLogViewer = () => {
     <div className="bg-slate-800/40 rounded-2xl border border-white/10 overflow-hidden">
       {/* Controls */}
       <div className="bg-slate-700/50 border-b border-white/10 p-4 sm:p-6 space-y-4">
+        {/* Header with Event Listener Status */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-white">Audit Log</h3>
+            <div className="flex items-center gap-2 text-xs">
+              {isListening ? (
+                <div className="flex items-center gap-1 text-green-400">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                  <span>Real-time enabled</span>
+                </div>
+              ) : eventError ? (
+                <div className="flex items-center gap-1 text-yellow-400">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-yellow-500"></span>
+                  <span>Web3 unavailable</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1 text-slate-400">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-slate-500"></span>
+                  <span>Initializing...</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="text-sm text-slate-400">
+            Total: {totalLogs} actions
+          </div>
+        </div>
+
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div className="flex gap-2">
@@ -128,11 +165,10 @@ export const AuditLogViewer = () => {
               <option value="update_allocation">Update Allocation</option>
               <option value="create_user">Create User</option>
               <option value="delete_user">Delete User</option>
+              <option value="event_revenue_distributed">Blockchain Event - Revenue Distributed</option>
+              <option value="balance_discrepancy">Balance Discrepancy Detected</option>
+              <option value="manual_reconciliation">Manual Reconciliation</option>
             </select>
-          </div>
-
-          <div className="text-sm text-slate-400">
-            Total: {totalLogs} actions
           </div>
         </div>
 
