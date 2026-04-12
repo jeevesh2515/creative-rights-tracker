@@ -6,6 +6,8 @@ import { Role, useAuth, type User } from '@/lib/auth';
 import { toast } from 'react-hot-toast';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { DistributionForm } from "@/components/admin/DistributionForm";
+import { UserManagementTable } from "@/components/admin/UserManagementTable";
+import { AuditLogViewer } from "@/components/admin/AuditLogViewer";
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -48,11 +50,11 @@ export default function AdminPage() {
   return (
     <AdminLayout activeTab={activeTab} onTabChange={setActiveTab}>
       {activeTab === 'users' && (
-        <main className="p-8 max-w-4xl mx-auto space-y-6">
+        <main className="p-8 max-w-full mx-auto space-y-6">
           <h2 className="text-2xl font-bold text-white">User Management</h2>
+          <UserManagementTable />
 
-          <div className="rounded-2xl border border-white/10 bg-slate-800/40 p-4 sm:p-6 space-y-4">
-            <h3 className="font-semibold text-white">Invite User</h3>
+          <div className="rounded-2xl border border-white/10 bg-slate-800/40 p-4 sm:p-6 space-y-4"><h3 className="font-semibold text-white" style={{display: "none"}}>Invite User</h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <input
                 className="px-3 py-2 rounded border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400"
@@ -165,9 +167,7 @@ export default function AdminPage() {
       {activeTab === 'audit' && (
         <div className="p-8">
           <h2 className="text-2xl font-bold text-white mb-6">Audit Log</h2>
-          <div className="bg-slate-800/40 rounded-2xl border border-white/10 p-8 text-slate-400">
-            Audit Log Viewer (Coming soon)
-          </div>
+          <AuditLogViewer />
         </div>
       )}
 
