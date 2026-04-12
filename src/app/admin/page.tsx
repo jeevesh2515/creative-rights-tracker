@@ -11,6 +11,8 @@ import { AuditLogViewer } from "@/components/admin/AuditLogViewer";
 import { AnalyticsCards } from "@/components/admin/AnalyticsCards";
 import { RevenueTrendChart } from "@/components/admin/RevenueTrendChart";
 import { DistributionBreakdownChart } from "@/components/admin/DistributionBreakdownChart";
+import { TransactionReportPanel } from "@/components/admin/TransactionReportPanel";
+import { DistributionReportPanel } from "@/components/admin/DistributionReportPanel";
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -176,6 +178,17 @@ export default function AdminPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RevenueTrendChart />
             <DistributionBreakdownChart />
+          </div>
+        </main>
+      )}
+
+      {activeTab === 'reports' && (
+        <main className="p-8 max-w-full mx-auto space-y-6">
+          <h2 className="text-2xl font-bold text-white">Reports & Exports</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TransactionReportPanel />
+            <DistributionReportPanel />
           </div>
         </main>
       )}
