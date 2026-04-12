@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { supabaseClient } from '@/lib/supabaseClient';
+import { supabase as supabaseClient } from '@/lib/supabaseClient';
 import toast from 'react-hot-toast';
 import { AdminAuditLog } from '@/lib/types';
 

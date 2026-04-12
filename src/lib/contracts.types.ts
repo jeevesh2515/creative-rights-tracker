@@ -24,7 +24,7 @@ export interface RightsHolder {
 /**
  * RevenueRights contract interface
  */
-export interface IRevenueRights extends Contract {
+export interface IRevenueRights {
   // View functions
   getRightsHolders(): Promise<RightsHolder[]>;
   getContractBalance(): Promise<bigint>;
@@ -74,7 +74,7 @@ export interface HolderPaidEvent {
 /**
  * RevenueSplitter contract interface
  */
-export interface IRevenueSplitter extends Contract {
+export interface IRevenueSplitter {
   // View functions
   shares(account: string): Promise<bigint>;
   released(account: string): Promise<bigint>;
