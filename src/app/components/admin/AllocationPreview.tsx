@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import { GasFeeSummary } from './GasFeeSummary';
+import { useGasPrice } from '@/hooks/useGasPrice';
 
 interface AllocationPreviewProps {
   recipients: Array<{
@@ -15,6 +17,13 @@ export const AllocationPreview = React.memo<AllocationPreviewProps>(
   ({ recipients, totalAmount }) => {
     const totalAllocated = recipients.reduce((sum, r) => sum + r.amount, 0);
     const difference = Math.abs(totalAllocated - totalAmount);
+
+    // Get gas price and fee estimates
+    const { gasPrice, estimatedFee, isEstimating } = useGasPrice({
+      shouldPoll: true,
+      recipients: recipients.map(r => ({ user_id: r.user_id, percentage: r.percentage })),
+      totalAmount: totalAmount,
+    });
 
     return (
       <div className="bg-slate-700/30 rounded-2xl border border-indigo-500/20 p-6 mt-6">
@@ -59,6 +68,13 @@ export const AllocationPreview = React.memo<AllocationPreviewProps>(
             </tbody>
           </table>
         </div>
+
+        {/* Gas Fee Summary */}
+        <GasFeeSummary
+          estimatedFeeEth={estimatedFee}
+          gasPrice={gasPrice}
+          isEstimating={isEstimating}
+        />
 
         {/* Footer Warning */}
         <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
