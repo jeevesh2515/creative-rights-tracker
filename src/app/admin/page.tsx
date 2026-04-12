@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Role, useAuth, type User } from '@/lib/auth';
 import { toast } from 'react-hot-toast';
 import { AdminLayout } from '@/components/admin/AdminLayout';
+import { DistributionForm } from "@/components/admin/DistributionForm";
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -156,7 +157,7 @@ export default function AdminPage() {
         <div className="p-8">
           <h2 className="text-2xl font-bold text-white mb-6">Revenue Distribution</h2>
           <div className="bg-slate-800/40 rounded-2xl border border-white/10 p-8 text-slate-400">
-            Distribution Panel (Coming soon)
+            <DistributionForm />
           </div>
         </div>
       )}
