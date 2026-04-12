@@ -192,3 +192,46 @@ export interface RevenueTrend {
   source: string;
   projectName: string;
 }
+
+// Admin Operations
+export type AdminAction =
+  | 'create_user'
+  | 'update_allocation'
+  | 'delete_user'
+  | 'distribute_revenue'
+  | 'approve_distribution'
+  | 'reject_distribution';
+
+export type DistributionStatus = 'pending' | 'approved' | 'rejected' | 'completed' | 'failed';
+
+export interface AdminAuditLog {
+  id: string;
+  admin_id: string;
+  action: AdminAction;
+  target_user_id?: string;
+  target_project_id?: string;
+  details: Record<string, any>;
+  status: DistributionStatus | string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DistributionPayload {
+  project_id: string;
+  recipients: Array<{
+    user_id: string;
+    percentage: number;
+    amount?: number;
+  }>;
+  total_amount: number;
+  initiated_by: string;
+  timestamp: string;
+}
+
+export interface UserAllocation {
+  user_id: string;
+  project_id: string;
+  percentage: number;
+  created_at: string;
+  updated_at: string;
+}
