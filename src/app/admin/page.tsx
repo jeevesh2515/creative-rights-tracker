@@ -8,6 +8,9 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { DistributionForm } from "@/components/admin/DistributionForm";
 import { UserManagementTable } from "@/components/admin/UserManagementTable";
 import { AuditLogViewer } from "@/components/admin/AuditLogViewer";
+import { AnalyticsCards } from "@/components/admin/AnalyticsCards";
+import { RevenueTrendChart } from "@/components/admin/RevenueTrendChart";
+import { DistributionBreakdownChart } from "@/components/admin/DistributionBreakdownChart";
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -162,6 +165,19 @@ export default function AdminPage() {
             <DistributionForm />
           </div>
         </div>
+      )}
+
+      {activeTab === 'analytics' && (
+        <main className="p-8 max-w-full mx-auto space-y-6">
+          <h2 className="text-2xl font-bold text-white">Analytics Dashboard</h2>
+          
+          <AnalyticsCards />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RevenueTrendChart />
+            <DistributionBreakdownChart />
+          </div>
+        </main>
       )}
 
       {activeTab === 'audit' && (

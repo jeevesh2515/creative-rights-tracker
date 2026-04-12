@@ -11,6 +11,7 @@ interface AdminLayoutProps {
 const ADMIN_TABS = [
   { id: 'users', label: 'Users', icon: '👥' },
   { id: 'distributions', label: 'Distributions', icon: '⚡' },
+  { id: 'analytics', label: 'Analytics', icon: '📊' },
   { id: 'audit', label: 'Audit Log', icon: '📋' },
   { id: 'health', label: 'Health', icon: '💚' },
 ] as const;
