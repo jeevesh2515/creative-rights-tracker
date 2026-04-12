@@ -58,7 +58,7 @@ contract RevenueRights {
         owner = msg.sender;
     }
 
-    function distributeRevenue() external payable {
+    function distributeRevenue() external payable onlyOwner {
         require(msg.value > 0, "Must send ETH");
         uint256 remaining = msg.value;
 
