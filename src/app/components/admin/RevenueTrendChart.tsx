@@ -9,19 +9,13 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts';
 import { fetchRevenueByDate } from '@/lib/analyticsUtils';
+import { SkeletonChart } from './LoadingSkeletons';
 
 interface RevenueTrendChartProps {
   timeRange?: 7 | 14;
 }
-
-const SkeletonChart = () => (
-  <div className="p-6 rounded-lg bg-slate-800/40 border border-white/10 animate-pulse">
-    <div className="h-80 bg-slate-700/50 rounded" />
-  </div>
-);
 
 export const RevenueTrendChart = React.memo<RevenueTrendChartProps>(({ timeRange = 7 }) => {
   const [data, setData] = useState<{ date: string; revenue: number }[]>([]);
@@ -80,7 +74,7 @@ export const RevenueTrendChart = React.memo<RevenueTrendChartProps>(({ timeRange
   }
 
   return (
-    <div className="p-6 rounded-lg bg-slate-800/40 border border-white/10 overflow-hidden">
+    <div className="p-6 rounded-lg bg-slate-800/40 border border-white/10 overflow-hidden animate-fadeIn" role="img" aria-label={`Revenue trend chart over the last ${timeRange} days. Line chart showing revenue distribution across dates.`}>
       <h3 className="text-lg font-semibold text-white mb-4">Revenue Trend ({timeRange} Days)</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>

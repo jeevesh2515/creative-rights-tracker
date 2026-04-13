@@ -213,12 +213,14 @@ export const DistributionForm = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Project Selection */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2">Project</label>
+            <label htmlFor="project-select" className="block text-sm font-medium text-white mb-2">Project</label>
             <select
+              id="project-select"
+              aria-label="Select a project for revenue distribution"
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
               disabled={isSubmitting}
-              className="w-full px-4 py-2 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 disabled:opacity-50 min-h-[44px]"
             >
               <option value="">Select a project</option>
               {projects.map((p) => (
@@ -228,25 +230,27 @@ export const DistributionForm = () => {
               ))}
             </select>
             {validationErrors.project && (
-              <p className="text-red-400 text-sm mt-1">{validationErrors.project}</p>
+              <p className="text-red-400 text-sm mt-1" role="alert">{validationErrors.project}</p>
             )}
           </div>
 
           {/* Total Amount */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2">Total Amount ($)</label>
+            <label htmlFor="total-amount" className="block text-sm font-medium text-white mb-2">Total Amount ($)</label>
             <input
+              id="total-amount"
               type="number"
               step="0.01"
               min="0"
+              aria-label="Enter total amount for distribution"
               value={totalAmount}
               onChange={(e) => setTotalAmount(parseFloat(e.target.value) || 0)}
               disabled={isSubmitting}
-              className="w-full px-4 py-2 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 disabled:opacity-50 min-h-[44px]"
               placeholder="0.00"
             />
             {validationErrors.amount && (
-              <p className="text-red-400 text-sm mt-1">{validationErrors.amount}</p>
+              <p className="text-red-400 text-sm mt-1" role="alert">{validationErrors.amount}</p>
             )}
           </div>
 
@@ -260,10 +264,11 @@ export const DistributionForm = () => {
                     <input
                       type="text"
                       placeholder="User ID or Email"
+                      aria-label={`Recipient ${idx + 1} user ID or email`}
                       value={recipient.user_id}
                       onChange={(e) => handleRecipientChange(idx, 'user_id', e.target.value)}
                       disabled={isSubmitting}
-                      className="w-full px-3 py-2 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 text-sm disabled:opacity-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 text-sm disabled:opacity-50 min-h-[44px]"
                     />
                   </div>
                   <div className="w-24">
@@ -272,10 +277,11 @@ export const DistributionForm = () => {
                       step="0.1"
                       min="0"
                       max="100"
+                      aria-label={`Recipient ${idx + 1} percentage`}
                       value={recipient.percentage}
                       onChange={(e) => handleRecipientChange(idx, 'percentage', parseFloat(e.target.value) || 0)}
                       disabled={isSubmitting}
-                      className="w-full px-3 py-2 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 text-sm disabled:opacity-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-600 bg-slate-900/50 text-white placeholder-slate-400 text-sm disabled:opacity-50 min-h-[44px]"
                       placeholder="0"
                     />
                     <p className="text-xs text-slate-400 mt-1">%</p>
@@ -283,9 +289,10 @@ export const DistributionForm = () => {
                   {recipients.length > 1 && (
                     <button
                       type="button"
+                      aria-label={`Remove recipient ${idx + 1}`}
                       onClick={() => handleRemoveRecipient(idx)}
                       disabled={isSubmitting}
-                      className="px-3 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors text-sm disabled:opacity-50"
+                      className="px-3 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors text-sm disabled:opacity-50 min-h-[44px]"
                     >
                       Remove
                     </button>
@@ -295,6 +302,7 @@ export const DistributionForm = () => {
             </div>
             <button
               type="button"
+              aria-label="Add another recipient"
               onClick={handleAddRecipient}
               disabled={isSubmitting}
               className="mt-3 text-sm text-indigo-400 hover:text-indigo-300 disabled:text-slate-500"
@@ -302,10 +310,10 @@ export const DistributionForm = () => {
               + Add Recipient
             </button>
             {validationErrors.percentages && (
-              <p className="text-red-400 text-sm mt-2">{validationErrors.percentages}</p>
+              <p className="text-red-400 text-sm mt-2" role="alert">{validationErrors.percentages}</p>
             )}
             {validationErrors.recipientIds && (
-              <p className="text-red-400 text-sm mt-2">{validationErrors.recipientIds}</p>
+              <p className="text-red-400 text-sm mt-2" role="alert">{validationErrors.recipientIds}</p>
             )}
           </div>
 
@@ -331,14 +339,14 @@ export const DistributionForm = () => {
                 }
               }}
               disabled={!validate() || selectedProject === '' || isSubmitting}
-              className="flex-1 px-4 py-2 rounded-lg border border-indigo-500/30 text-indigo-400 font-medium disabled:opacity-50 hover:bg-indigo-500/10 transition-colors"
+              className="flex-1 px-4 py-2 rounded-lg border border-indigo-500/30 text-indigo-400 font-medium disabled:opacity-50 hover:bg-indigo-500/10 transition-colors min-h-[44px] flex items-center justify-center"
             >
               {showPreview ? 'Hide Preview' : 'Show Preview'}
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !validate()}
-              className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium disabled:opacity-50 hover:shadow-lg hover:shadow-indigo-500/50 transition-all"
+              className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium disabled:opacity-50 hover:shadow-lg hover:shadow-indigo-500/50 transition-all min-h-[44px] flex items-center justify-center"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Distribution'}
             </button>

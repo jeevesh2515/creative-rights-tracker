@@ -200,7 +200,8 @@ export const AuditLogViewer = () => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm" role="table" aria-label="Audit activity log showing all system actions and user activities">
+          <caption className="sr-only">Activity log table with timestamps, administrators, actions, projects, and details</caption>
           <thead>
             <tr className="border-b border-white/10 bg-slate-700/30">
               <th className="text-left p-4 text-white font-semibold">Timestamp</th>

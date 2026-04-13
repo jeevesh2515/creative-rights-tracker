@@ -96,7 +96,7 @@ export const DistributionBreakdownChart = React.memo<DistributionBreakdownChartP
   const totalAmount = data.reduce((sum, d) => sum + d.total, 0);
 
   return (
-    <div className="p-6 rounded-lg bg-slate-800/40 border border-white/10 overflow-hidden">
+    <div className="p-6 rounded-lg bg-slate-800/40 border border-white/10 overflow-hidden animate-fadeIn" role="img" aria-label={`Recipient distribution breakdown pie chart showing ${data.length} recipients with total of ${totalAmount.toFixed(6)} ETH distributed`}>
       <h3 className="text-lg font-semibold text-white mb-4">Recipient Breakdown</h3>
       {data.length > 0 && (
         <>

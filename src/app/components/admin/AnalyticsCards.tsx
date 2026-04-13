@@ -119,6 +119,8 @@ export const AnalyticsCards = React.memo(() => {
         <div
           key={card.title}
           className={`p-4 rounded-lg bg-slate-800/40 border-l-4 ${card.borderColor} hover:bg-slate-800/60 transition-colors`}
+          role="img"
+          aria-label={`${card.title}: ${card.value}. ${card.subtitle}`}
         >
           <div className="flex items-start justify-between">
             <div className="flex-1">

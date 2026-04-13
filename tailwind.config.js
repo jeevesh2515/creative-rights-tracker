@@ -44,6 +44,15 @@ module.exports = {
         'medium': '0 4px 25px 0 rgba(0, 0, 0, 0.15)',
         'large': '0 8px 35px 0 rgba(0, 0, 0, 0.2)',
       },
+      animation: {
+        fadeIn: 'fadeIn 0.5s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
     },
   },
   plugins: [

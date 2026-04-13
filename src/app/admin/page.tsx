@@ -13,6 +13,7 @@ import { RevenueTrendChart } from "@/components/admin/RevenueTrendChart";
 import { DistributionBreakdownChart } from "@/components/admin/DistributionBreakdownChart";
 import { TransactionReportPanel } from "@/components/admin/TransactionReportPanel";
 import { DistributionReportPanel } from "@/components/admin/DistributionReportPanel";
+import { SkeletonCard, SkeletonChart, SkeletonTable } from "@/components/admin/LoadingSkeletons";
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -22,6 +23,8 @@ export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [invite, setInvite] = useState({ name: '', email: '', role: 'creator' as Role });
   const [isLoading, setIsLoading] = useState(true);
+  const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(true);
+  const [isAuditLoading, setIsAuditLoading] = useState(true);
   const [isInviting, setIsInviting] = useState(false);
   const [activeTab, setActiveTab] = useState('users');
 
@@ -175,7 +178,7 @@ export default function AdminPage() {
           
           <AnalyticsCards />
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fadeIn">
             <RevenueTrendChart />
             <DistributionBreakdownChart />
           </div>
@@ -194,7 +197,7 @@ export default function AdminPage() {
       )}
 
       {activeTab === 'audit' && (
-        <div className="p-8">
+        <div className="p-8 animate-fadeIn">
           <h2 className="text-2xl font-bold text-white mb-6">Audit Log</h2>
           <AuditLogViewer />
         </div>
